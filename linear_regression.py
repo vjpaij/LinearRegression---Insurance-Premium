@@ -251,3 +251,5 @@ print(new_model.coef_)
    131.3143594    587.00923503   234.0453356   -448.01281436
   -373.04175627]
 '''
+
+#Note that we have to split the data into test and train sets for any models.
