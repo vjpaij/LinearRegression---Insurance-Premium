@@ -47,5 +47,20 @@ The distribution shows power law
 #Smoker feature
 data['smoker'].value_counts()
 fig4 = px.histogram(data, x='smoker', color= 'sex', color_discrete_sequence=['yellow', 'brown'], title='Smoker')
-fig4.show()
+#fig4.show()
 
+#Age and Charges relationship
+fig5 = px.scatter(data, x='age', y='charges', color='smoker', opacity=0.8, hover_data=['sex'], title='Age vs Charges')
+fig5.update_traces(marker_size = 5)
+#fig5.show()
+'''
+We see 3 distinguished clusters. With no smokers, a mix of both and then with smokers
+'''
+
+#BMI vs Charges relationship
+fig6 = px.scatter(data, x='bmi', y='charges', color='smoker', opacity=0.8, hover_data=['sex'], title='BMI vs Charges')
+fig6.update_traces(marker_size = 5)
+#fig6.show()
+'''
+it looks for non-smokers, bmi doesnt play much significance in increase in charges but we do see the trend for smokers.
+'''
