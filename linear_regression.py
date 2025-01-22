@@ -128,7 +128,7 @@ def try_parameters(m, b):
     plt.xlabel('Age')
     plt.ylabel('Charges')
     plt.legend(['Estimate', 'Actual'])
-    plt.show()
+    #plt.show()
 
 
 #try_parameters(267, -2091)
@@ -162,6 +162,14 @@ try_parameters(model.coef_, model.intercept_)
 try_parameters(model_SGD.coef_, model_SGD.intercept_)
 #Build similar model for different input parameters
 
+#to calculate the loss/error between the predicted and actual value
+#root mean square error
+def rmse(targets, predictions):
+    return np.sqrt(np.mean(np.square(targets-predictions)))
+
+loss = rmse(targets, predictions)
+loss_SGD = rmse(targets, predictions_SGD)
+print(f"Loss of Linear Regression Model: {loss}\nLoss of SGD model: {loss_SGD}")
 
 
 
