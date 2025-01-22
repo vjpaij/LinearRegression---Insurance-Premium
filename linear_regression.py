@@ -86,8 +86,51 @@ print(f"Smoker - Charge Correlation {smoker_charge_corr}")
 num_data = data.select_dtypes(include=['number'])
 print(num_data.corr())
 #representing it in a heatmap
-sns.heatmap(num_data.corr(), cmap='Blues', annot=True)
-plt.title('Correlation Matrix')
+# sns.heatmap(num_data.corr(), cmap='Blues', annot=True)
+# plt.title('Correlation Matrix')
 #plt.show()
+
+#Linear Regression using a Single Feature
+#Smoker and Age features have strongest correlation with charges
+#As Smoker is a categorical, building a linear regression is not significant
+#So first lets build Linear Regression for Age for non-smokers against the charges
+non_smoker_df = data[data['smoker'] == 'no']
+fig7 = px.scatter(non_smoker_df, x='age', y='charges', opacity=0.8, title='Age(Non-Smoker) vs Charges')
+#fig7.show()
+'''
+y = mx + b
+charges = (m * age) + b
+'''
+def estimate_charges(age, m, b):
+    return (m * age) + b
+
+#lets assume m=50 and b=100
+m, b = 50, 100
+ages = non_smoker_df['age']
+estimated_charges = estimate_charges(ages, m, b)
+
+#now we will check how good the above value was compared to actual data
+target = non_smoker_df['charges']
+# plt.plot(ages, estimated_charges, 'r', alpha=0.9)
+# plt. scatter(ages, target, s = 8, alpha=0.8)
+# plt.xlabel('Age')
+# plt.ylabel('Charges')
+# plt.legend(['Estimate', 'Actual'])
+# plt.show()
+#above value doesnt fit well with the actual data. Lets build a function to change value of m and b and try to fit.
+def try_parameters(m, b):
+    ages = non_smoker_df['age']
+    target = non_smoker_df['charges']
+    estimated_charges = estimate_charges(ages, m, b)
+    plt.plot(ages, estimated_charges, 'r', alpha=0.9)
+    plt. scatter(ages, target, s = 8, alpha=0.8)
+    plt.xlabel('Age')
+    plt.ylabel('Charges')
+    plt.legend(['Estimate', 'Actual'])
+    plt.show()
+
+try_parameters(400, -6500)
+
+
 
 
