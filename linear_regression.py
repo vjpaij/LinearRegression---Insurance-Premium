@@ -64,3 +64,30 @@ fig6.update_traces(marker_size = 5)
 '''
 it looks for non-smokers, bmi doesnt play much significance in increase in charges but we do see the trend for smokers.
 '''
+
+#Correlation
+'''
+From above relationship we can see some trends. Now we need to establish the correlation
+'''
+age_charge_corr = data['charges'].corr(data['age'])
+print(f"Age - Charge Correlation {age_charge_corr}")
+bmi_charge_corr = data['charges'].corr(data['bmi'])
+print(f"BMI - Charge Correlation {bmi_charge_corr}")
+
+#Correlation for categorical features.
+#Categorical feature should be changed to numeric to find the correlation
+smoker_values = {'no': 0, 'yes': 1}
+smoker_numeric = data['smoker'].map(smoker_values)
+print(smoker_numeric)
+smoker_charge_corr = data['charges'].corr(smoker_numeric)
+print(f"Smoker - Charge Correlation {smoker_charge_corr}")
+
+#Correlation against each features (numeric columns only)
+num_data = data.select_dtypes(include=['number'])
+print(num_data.corr())
+#representing it in a heatmap
+sns.heatmap(num_data.corr(), cmap='Blues', annot=True)
+plt.title('Correlation Matrix')
+#plt.show()
+
+
