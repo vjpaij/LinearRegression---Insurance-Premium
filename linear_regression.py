@@ -171,6 +171,15 @@ loss = rmse(targets, predictions)
 loss_SGD = rmse(targets, predictions_SGD)
 print(f"Loss of Linear Regression Model: {loss}\nLoss of SGD model: {loss_SGD}")
 
+#Linear Regression using Multiple Features
+#charges = (m1 * age) + (m2 * bmi) + (m3 * children) + b
+multi_inputs = non_smoker_df[['age', 'bmi', 'children']]
+multi_model = LinearRegression()
+multi_model.fit(multi_inputs, targets)
+multi_predictions = multi_model.predict(multi_inputs)
+multi_loss = rmse(targets, multi_predictions)
+print("Loss due to Age, BMI & Children Numeric Feature combination: ", multi_loss)
+
 
 
 
