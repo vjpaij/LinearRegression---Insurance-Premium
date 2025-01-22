@@ -180,6 +180,48 @@ multi_predictions = multi_model.predict(multi_inputs)
 multi_loss = rmse(targets, multi_predictions)
 print("Loss due to Age, BMI & Children Numeric Feature combination: ", multi_loss)
 
+#Using Categorical Features in the model
+'''
+3 rules used:
+1. if only 2 categories (binary), we can replace their values with 0 and 1.
+2. more than 2 categories, we perform one-hot encoding
+3. if the categories are in a natural order i.e. ordinal, then we can convert them into a number preserving the order
+eg: (cold, neutal, warm, hot) can be set as (1, 2, 3, 4)
+'''
+#Smoker Feature
+smoker_codes = {'no': 0, 'yes': 1}
+data['smoker_codes'] = data['smoker'].map(smoker_codes)
+#Sex Feature
+sex_codes = {'male': 0, 'female': 1}
+data['sex_codes'] = data['sex'].map(sex_codes)
+
+#model with these 2 categorical features: charges = (m1 * age) + (m2 * bmi) + (m3 * children) + 
+#                                                   (m4 * smoker_codes) + (m5 * sex_codes) + b
+cat_inputs = data[['age', 'bmi', 'children', 'smoker_codes', 'sex_codes']]
+all_targets = data['charges']
+cat_model = LinearRegression()
+cat_model.fit(cat_inputs, all_targets)
+cat_predictions = cat_model.predict(cat_inputs)
+cat_loss = rmse(all_targets, cat_predictions)
+print("Loss due to Age, BMI, Children, Smoker & Sex combination: ", cat_loss)
+
+#Region Feature
+from sklearn.preprocessing import OneHotEncoder
+enc = OneHotEncoder()
+enc.fit(data[['region']])
+print(enc.categories_)
+one_hot = enc.transform(data[['region']]).toarray()
+print(one_hot)
+data[['northeast', 'northwest', 'southeast', 'southwest']] = one_hot
+
+all_inputs = data[['age', 'bmi', 'children', 'smoker_codes', 'sex_codes', 'northeast', 'northwest', 'southeast', 'southwest']]
+all_model = LinearRegression()
+all_model.fit(all_inputs, all_targets)
+all_predictions = all_model.predict(all_inputs)
+all_loss = rmse(all_targets, all_predictions)
+print("Loss due to all features: ", all_loss)
+
+
 
 
 
