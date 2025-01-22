@@ -3,6 +3,7 @@ import plotly.express as px
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 data = pd.read_csv("insurance.csv")
 data.info()
@@ -129,7 +130,41 @@ def try_parameters(m, b):
     plt.legend(['Estimate', 'Actual'])
     plt.show()
 
-try_parameters(400, -6500)
+
+#try_parameters(267, -2091)
+
+
+#using library for linear regression
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+#since model.fit needs 2D for inputs, we assign input as below
+inputs = non_smoker_df[['age']]
+targets = non_smoker_df['charges']
+model.fit(inputs, targets)
+print(model.predict(np.array([[23], [36], [60]])))
+predictions = model.predict(inputs)
+print(predictions)
+#m value is stored in coef_ and b value in intercept_
+print(f"m: {model.coef_}\ny: {model.intercept_}")
+
+#Using SGDRegressor class - Used for more data. (stochastic gradient descent)
+from sklearn.linear_model import SGDRegressor 
+model_SGD = SGDRegressor()
+#since model.fit needs 2D for inputs, we assign input as below
+model_SGD.fit(inputs, targets)
+predictions_SGD = model_SGD.predict(inputs)
+print(predictions_SGD)
+
+#Any difference in Linear Regression and SGD?
+print(model.predict(np.array([[23], [36], [60]])))
+print(model_SGD.predict(np.array([[23], [36], [60]])))
+try_parameters(model.coef_, model.intercept_)
+try_parameters(model_SGD.coef_, model_SGD.intercept_)
+#Build similar model for different input parameters
+
+
+
+
 
 
 
