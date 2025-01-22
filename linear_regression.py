@@ -20,7 +20,7 @@ data['age'].describe()
 
 fig1 = px.histogram(data, x='age', marginal='box', nbins=47, title='Distribution of Age')
 fig1.update_layout(bargap = 0.1)
-#fig1.show()
+fig1.show()
 '''
 The distribution of age is almost uniform i.e. 20-30 customers across all age group except age 18 & 19.
 '''
@@ -28,7 +28,7 @@ The distribution of age is almost uniform i.e. 20-30 customers across all age gr
 #BMI feature
 fig2 = px.histogram(data, x='bmi', marginal='box', color_discrete_sequence=['red'], title='Distribution of BMI')
 fig2.update_layout(bargap = 0.1)
-#fig2.show()
+fig2.show()
 '''
 Distribution of BMI is showing Gaussian/Normal distribution
 '''
@@ -40,7 +40,7 @@ This is the column we are trying to predict. We are also using categorical colum
 fig3 = px.histogram(data, x='charges', marginal='box', color= 'smoker', color_discrete_sequence=['green', 'grey'], 
                     title='Annual Medical Charges')
 fig3.update_layout(bargap = 0.1)
-#fig3.show()
+fig3.show()
 '''
 The distribution shows power law
 '''
@@ -48,12 +48,12 @@ The distribution shows power law
 #Smoker feature
 data['smoker'].value_counts()
 fig4 = px.histogram(data, x='smoker', color= 'sex', color_discrete_sequence=['yellow', 'brown'], title='Smoker')
-#fig4.show()
+fig4.show()
 
 #Age and Charges relationship
 fig5 = px.scatter(data, x='age', y='charges', color='smoker', opacity=0.8, hover_data=['sex'], title='Age vs Charges')
 fig5.update_traces(marker_size = 5)
-#fig5.show()
+fig5.show()
 '''
 We see 3 distinguished clusters. With no smokers, a mix of both and then with smokers
 '''
@@ -61,7 +61,7 @@ We see 3 distinguished clusters. With no smokers, a mix of both and then with sm
 #BMI vs Charges relationship
 fig6 = px.scatter(data, x='bmi', y='charges', color='smoker', opacity=0.8, hover_data=['sex'], title='BMI vs Charges')
 fig6.update_traces(marker_size = 5)
-#fig6.show()
+fig6.show()
 '''
 it looks for non-smokers, bmi doesnt play much significance in increase in charges but we do see the trend for smokers.
 '''
@@ -87,9 +87,9 @@ print(f"Smoker - Charge Correlation {smoker_charge_corr}")
 num_data = data.select_dtypes(include=['number'])
 print(num_data.corr())
 #representing it in a heatmap
-# sns.heatmap(num_data.corr(), cmap='Blues', annot=True)
-# plt.title('Correlation Matrix')
-#plt.show()
+sns.heatmap(num_data.corr(), cmap='Blues', annot=True)
+plt.title('Correlation Matrix')
+plt.show()
 
 #Linear Regression using a Single Feature
 #Smoker and Age features have strongest correlation with charges
@@ -97,7 +97,7 @@ print(num_data.corr())
 #So first lets build Linear Regression for Age for non-smokers against the charges
 non_smoker_df = data[data['smoker'] == 'no']
 fig7 = px.scatter(non_smoker_df, x='age', y='charges', opacity=0.8, title='Age(Non-Smoker) vs Charges')
-#fig7.show()
+fig7.show()
 '''
 y = mx + b
 charges = (m * age) + b
@@ -112,12 +112,12 @@ estimated_charges = estimate_charges(ages, m, b)
 
 #now we will check how good the above value was compared to actual data
 target = non_smoker_df['charges']
-# plt.plot(ages, estimated_charges, 'r', alpha=0.9)
-# plt. scatter(ages, target, s = 8, alpha=0.8)
-# plt.xlabel('Age')
-# plt.ylabel('Charges')
-# plt.legend(['Estimate', 'Actual'])
-# plt.show()
+plt.plot(ages, estimated_charges, 'r', alpha=0.9)
+plt. scatter(ages, target, s = 8, alpha=0.8)
+plt.xlabel('Age')
+plt.ylabel('Charges')
+plt.legend(['Estimate', 'Actual'])
+plt.show()
 #above value doesnt fit well with the actual data. Lets build a function to change value of m and b and try to fit.
 def try_parameters(m, b):
     ages = non_smoker_df['age']
@@ -128,10 +128,10 @@ def try_parameters(m, b):
     plt.xlabel('Age')
     plt.ylabel('Charges')
     plt.legend(['Estimate', 'Actual'])
-    #plt.show()
+    plt.show()
 
 
-#try_parameters(267, -2091)
+try_parameters(267, -2091)
 
 
 #using library for linear regression
@@ -251,16 +251,3 @@ print(new_model.coef_)
    131.3143594    587.00923503   234.0453356   -448.01281436
   -373.04175627]
 '''
-
-
-
-
-
-
-
-
-
-
-
-
-
