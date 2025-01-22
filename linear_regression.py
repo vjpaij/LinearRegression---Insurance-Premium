@@ -221,6 +221,42 @@ all_predictions = all_model.predict(all_inputs)
 all_loss = rmse(all_targets, all_predictions)
 print("Loss due to all features: ", all_loss)
 
+#Needs improvisation as model wasnt as expected
+print(all_model.coef_)
+'''
+[  256.85635254   339.19345361   475.50054515 23848.53454191
+   131.3143594    587.00923503   234.0453356   -448.01281436
+  -373.04175627]
+  so we see age has a weight of 256 whereas bmi has 339 and children has 475. But we have seen earlier that age has a 
+  greater weightage than these 2. So whats happening here? This is due to smaller values for age wrt to other fields 
+  and hence these values has to be standardized to a proportionate value before creating a model
+'''
+from sklearn.preprocessing import StandardScaler
+numeric_cols = ['age', 'bmi', 'children']
+scaler = StandardScaler()
+scaler.fit(data[numeric_cols])
+scaled_inputs = scaler.transform(data[numeric_cols])
+cat_cols = ['smoker_codes', 'sex_codes', 'northeast', 'northwest', 'southeast', 'southwest']
+cat_data = data[cat_cols].values
+
+new_inputs = np.concatenate((scaled_inputs, cat_data), axis=1)
+new_model = LinearRegression()
+new_model.fit(new_inputs, all_targets)
+new_predictions = new_model.predict(new_inputs)
+new_loss = rmse(all_targets, new_predictions)
+print("Loss due to all features after Standardization: ", new_loss)
+print(new_model.coef_)
+'''
+[ 3607.47273619  2067.69196584   572.99820995 23848.53454191
+   131.3143594    587.00923503   234.0453356   -448.01281436
+  -373.04175627]
+'''
+
+
+
+
+
+
 
 
 
